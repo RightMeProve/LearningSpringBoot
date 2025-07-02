@@ -78,7 +78,7 @@ You can run them independently using your IDE.
 
 ## 📒 Summary Notes PDF
 
-You can also check out the complete [📄 PDF Summary of all 10 DI exercises](./Spring_DI_Exercises_Notes.pdf), including:
+You can also check out the complete [📄 PDF Summary of (task1 - task10) DI exercises](./SummaryNotes.pdf), including:
 
 * What each exercise teaches
 * Key takeaways
