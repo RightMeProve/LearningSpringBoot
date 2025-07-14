@@ -4,6 +4,7 @@ import com.learningSpringBoot.mvcs.mvcs.dto.EmployeeDTO;
 import com.learningSpringBoot.mvcs.mvcs.entities.EmployeeEntity;
 import com.learningSpringBoot.mvcs.mvcs.repositories.EmployeeRepository;
 import com.learningSpringBoot.mvcs.mvcs.services.EmployeeService;
+import jakarta.validation.Valid;
 import org.springframework.boot.context.config.ConfigDataResourceNotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -46,12 +47,12 @@ public class EmployeeController {
     // browser we can't generate post request directly
     @PostMapping
     // with requestBody we can send all the required fields for entry
-    public ResponseEntity<EmployeeDTO> createNewEmployee(@RequestBody EmployeeDTO inputEmployee){
+    public ResponseEntity<EmployeeDTO> createNewEmployee(@RequestBody @Valid EmployeeDTO inputEmployee){
         return ResponseEntity.ok(employeeService.createNewEmployee(inputEmployee));
     }
 
     @PutMapping(path = "/{employeeId}")
-    public ResponseEntity<EmployeeDTO> updateEmployeeById(@RequestBody EmployeeDTO employeeDTO,@PathVariable Long employeeId){
+    public ResponseEntity<EmployeeDTO> updateEmployeeById(@RequestBody @Valid EmployeeDTO employeeDTO,@PathVariable Long employeeId){
         return ResponseEntity.ok(employeeService.updateEmployeeById(employeeId,employeeDTO));
     }
 
