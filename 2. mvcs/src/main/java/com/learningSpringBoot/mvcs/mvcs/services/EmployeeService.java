@@ -2,6 +2,7 @@ package com.learningSpringBoot.mvcs.mvcs.services;
 
 import com.learningSpringBoot.mvcs.mvcs.dto.EmployeeDTO;
 import com.learningSpringBoot.mvcs.mvcs.entities.EmployeeEntity;
+import com.learningSpringBoot.mvcs.mvcs.exceptions.ResourceNotFoundException;
 import com.learningSpringBoot.mvcs.mvcs.repositories.EmployeeRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -44,29 +45,29 @@ public class EmployeeService {
         EmployeeEntity savedEmployeeEntity = employeeRepository.save(toSaveEntity);
         return modelMapper.map(savedEmployeeEntity,EmployeeDTO.class);
     }
+    public boolean isExistsByEmployeeId(Long employeeId){
+        boolean exists = employeeRepository.existsById(employeeId);
+        if(!exists) throw new ResourceNotFoundException("Employee not found with id: "+employeeId);
+        return true;
+    }
 
     public EmployeeDTO updateEmployeeById(Long employeeId, EmployeeDTO employeeDTO) {
+        isExistsByEmployeeId(employeeId);
         EmployeeEntity employeeEntity = modelMapper.map(employeeDTO,EmployeeEntity.class);
         employeeEntity.setId(employeeId);
         EmployeeEntity savedEmployeeEntity = employeeRepository.save(employeeEntity);
         return modelMapper.map(savedEmployeeEntity,EmployeeDTO.class);
     }
 
-    public boolean isExistsByEmployeeId(Long employeeId){
-        return employeeRepository.existsById(employeeId);
-    }
-
 
     public boolean deleteEmployeeById(Long employeeId){
-        boolean exists = isExistsByEmployeeId(employeeId);
-        if(!exists) return  false;
+        isExistsByEmployeeId(employeeId);
         employeeRepository.deleteById(employeeId);
         return true;
     }
 
     public EmployeeDTO updatePartialEmployeeById(Long employeeId, Map<String, Object> updates){
-        boolean exists = isExistsByEmployeeId(employeeId);
-        if(!exists) return null;
+        isExistsByEmployeeId(employeeId);
         EmployeeEntity employeeEntity = employeeRepository.findById(employeeId).get();
         // field as key of the map
         updates.forEach((field,value)->{

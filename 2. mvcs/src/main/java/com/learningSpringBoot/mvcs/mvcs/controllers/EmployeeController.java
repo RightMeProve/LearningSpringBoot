@@ -2,6 +2,7 @@ package com.learningSpringBoot.mvcs.mvcs.controllers;
 
 import com.learningSpringBoot.mvcs.mvcs.dto.EmployeeDTO;
 import com.learningSpringBoot.mvcs.mvcs.entities.EmployeeEntity;
+import com.learningSpringBoot.mvcs.mvcs.exceptions.ResourceNotFoundException;
 import com.learningSpringBoot.mvcs.mvcs.repositories.EmployeeRepository;
 import com.learningSpringBoot.mvcs.mvcs.services.EmployeeService;
 import jakarta.validation.Valid;
@@ -30,7 +31,7 @@ public class EmployeeController {
         Optional<EmployeeDTO> employeeDTO = employeeService.getEmployeeById(id);
         return employeeDTO
                 .map(employeeDTO1 -> ResponseEntity.ok(employeeDTO1))
-                .orElse(ResponseEntity.notFound().build());
+                .orElseThrow(()->new ResourceNotFoundException("Employee not found with id: "+id));
     }
 
     // some sample url to test
